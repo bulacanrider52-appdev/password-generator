@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Password Generator</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body{
+    font-family: Arial;
+    background:#0d1117;
+    color:white;
+    text-align:center;
+    margin-top:50px;
+}
+
+.container{
+    background:#161b22;
+    padding:20px;
+    margin:auto;
+    width:350px;
+    border-radius:10px;
+}
+
+input, button{
+    padding:10px;
+    margin:5px;
+    width:90%;
+    border:none;
+    border-radius:5px;
+}
+
+button{
+    cursor:pointer;
+}
+
+.generate{background:#00c853;color:white;}
+.copy{background:#2196f3;color:white;}
+
+.password{
+    margin:10px;
+    font-size:18px;
+    word-break:break-all;
+    color:#00e5ff;
+}
+
+.strength{
+    margin-top:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🔐 Password Generator</h2>
+
+    <input type="number" id="length" value="12" min="6" max="64">
+
+    <button class="generate" onclick="generatePassword()">Generate</button>
+    <button class="copy" onclick="copyPassword()">Copy</button>
+
+    <div class="password" id="result"></div>
+    <div class="strength" id="strength"></div>
+</div>
+
+<script>
+let currentPassword = "";
+
+function generatePassword() {
+    const length = document.getElementById("length").value;
+
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}[]<>?";
+    let password = "";
+
+    const array = new Uint32Array(length);
+    crypto.getRandomValues(array);
+
+    for (let i = 0; i < length; i++) {
+        password += chars[array[i] % chars.length];
+    }
+
+    currentPassword = password;
+    document.getElementById("result").innerText = password;
+
+    checkStrength(password);
+}
+
+function copyPassword() {
+    if (!currentPassword) return alert("Generate muna!");
+
+    navigator.clipboard.writeText(currentPassword);
+    alert("Copied!");
+}
+
+function checkStrength(pw){
+    let strength = "Weak";
+    if(pw.length >= 12) strength = "Medium";
+    if(pw.length >= 16) strength = "Strong";
+
+    document.getElementById("strength").innerText = "Strength: " + strength;
+}
+
+// REGISTER SERVICE WORKER
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+</body>
+</html>
