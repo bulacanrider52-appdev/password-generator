@@ -10,18 +10,19 @@
 <style>
 body{
     font-family: Arial;
-    background:#0d1117;
-    color:white;
+    background:#f5f5f5; /* light background */
+    color:black; /* black text */
     text-align:center;
     margin-top:50px;
 }
 
 .container{
-    background:#161b22;
+    background:white;
     padding:20px;
     margin:auto;
     width:350px;
     border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
 input, button{
@@ -30,21 +31,22 @@ input, button{
     width:90%;
     border:none;
     border-radius:5px;
+    color:black; /* black text */
 }
 
 button{
     cursor:pointer;
 }
 
-.generate{background:#00c853;color:white;}
-.copy{background:#2196f3;color:white;}
-.edit{background:#ff9800;color:white;}
+.generate{background:#00c853;}
+.copy{background:#2196f3;}
+.edit{background:#ff9800;}
 
 .password{
     margin:10px;
     font-size:18px;
     word-break:break-all;
-    color:#00e5ff;
+    color:black;
 }
 
 .strength{
@@ -73,7 +75,6 @@ button{
 let currentPassword = "";
 let isEditing = false;
 
-// WORD LIST (para readable)
 const words = [
     "shadow","hunter","dragon","storm","night",
     "ghost","fire","blade","wolf","steel",
@@ -86,7 +87,6 @@ const numbers = "0123456789";
 function generatePassword() {
     const length = document.getElementById("length").value;
 
-    // random word
     const word1 = randomWord();
     const word2 = randomWord();
 
@@ -95,7 +95,6 @@ function generatePassword() {
 
     let password = word1 + symbol + word2 + number;
 
-    // trim if longer than length
     password = password.slice(0, length);
 
     currentPassword = password;
@@ -156,7 +155,6 @@ function checkStrength(pw){
     document.getElementById("strength").innerText = "Strength: " + strength;
 }
 
-// REGISTER SERVICE WORKER
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
 }
