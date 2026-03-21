@@ -44,7 +44,7 @@ button{
     margin:10px;
     font-size:18px;
     word-break:break-all;
-    color:black; /* ✅ ITO LANG ANG BINAGO */
+    color:black;
 }
 
 .strength{
@@ -85,11 +85,11 @@ const numbers = "0123456789";
 function generatePassword() {
     const length = document.getElementById("length").value;
 
-    const word1 = randomWord();
-    const word2 = randomWord();
+    const word1 = capitalize(randomWord());
+    const word2 = capitalize(randomWord());
 
     const number = randomChar(numbers, 2);
-    const symbol = randomChar(symbols, 2);
+    const symbol = randomChar(symbols, 1);
 
     let password = word1 + symbol + word2 + number;
 
@@ -99,6 +99,10 @@ function generatePassword() {
     document.getElementById("resultInput").value = password;
 
     checkStrength(password);
+}
+
+function capitalize(word){
+    return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 function randomWord(){
@@ -133,8 +137,10 @@ function toggleEdit(){
     if(isEditing){
         input.removeAttribute("readonly");
         input.focus();
+        input.style.outline = "2px solid #ff9800";
     }else{
         input.setAttribute("readonly", true);
+        input.style.outline = "none";
         currentPassword = input.value;
         checkStrength(currentPassword);
     }
